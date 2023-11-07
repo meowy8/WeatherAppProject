@@ -163,3 +163,7 @@ hr {
 .air-pollution span {
   color: rgb(1, 186, 41);
 }
+
+.card-foot .wind span {
+  font-size: .7rem;
+}

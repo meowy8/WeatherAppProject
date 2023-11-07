@@ -23,23 +23,39 @@ const airPollutionInfo = document.getElementById('air-pollution-info');
 const airPressureValue = document.getElementById('air-pressure-value');
 
 const weatherApiFetch = () => {
-  fetch('http://api.weatherapi.com/v1/current.json?key=911c51c90b2644cd9ae172628232509&q=edinburgh')
+  fetch('http://api.weatherapi.com/v1/current.json?key=911c51c90b2644cd9ae172628232509&q=edinburgh&aqi=yes')
   .then(response => response.json())
   .then(data => {
     console.log(data)
 
     location.innerText = data.location.name
-    temperature.innerText = data.current.temp_c + 'C'
+    temperature.innerText = data.current.temp_c + '°C'
     weatherDescription.innerText = data.current.condition.text
     uvValue.innerText = data.current.uv
-    windValue.innerText = data.current.wind_mph + ' mph Wind'
-    gustValue.innerText = data.current.gust_mph + ' mph Gust'
-    feelsLikeValue.innerText = data.current.feelslike_c + 'C'
-    precipitationValue.innerText = data.current.precip_mm + ' mm in last 24hr'
-    visibilityValue.innerText = data.current.vis_miles + ' mi'
+    windValue.innerHTML = data.current.wind_mph + '<span> mph Wind</span>'
+    gustValue.innerHTML = data.current.gust_mph + '<span> mph Gusts</span>'
+    feelsLikeValue.innerText = data.current.feelslike_c + '°C'
+    precipitationValue.innerHTML = data.current.precip_mm + '<span> mm in last 24hr</span>'
+    visibilityValue.innerHTML = data.current.vis_miles + '<span> mi</span>'
     humidityValue.innerText = data.current.humidity + '%'
-    airPressureValue.innerText = data.current.pressure_mb + 'mbar'
+    airPollutionValue.innerText = data.current.air_quality['gb-defra-index']
+    airPressureValue.innerHTML = data.current.pressure_mb + '<span>mbar</span>'
+
+    const timeArr = data.current.last_updated.split(' ')
+    date.innerText = timeArr[0]
+    time.innerText = timeArr[1]
+  })
+}
+
+const astroApiFetch = () => {
+  fetch('http://api.weatherapi.com/v1/astronomy.json?key=911c51c90b2644cd9ae172628232509&q=edinburgh')
+  .then(response => response.json())
+  .then(data => {
+    console.log(data)
+    sunsetTime.innerText = data.astronomy.astro.sunset
+    sunriseTime.innerText = data.astronomy.astro.sunrise
   })
 }
 
 weatherApiFetch()
+astroApiFetch()

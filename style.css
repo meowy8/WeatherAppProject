@@ -12,6 +12,7 @@ body {
 
 main {
   display: flex;
+  justify-content: center;
   width: 100%;
   height: 100%;
   margin: 0;
@@ -36,6 +37,11 @@ main {
   width: 70%;
   height: 100%;
   margin: 0;
+  opacity: 1;
+}
+
+.hidden {
+  display: none;
 }
 
 .search-input-container {
@@ -54,7 +60,6 @@ main {
   padding: 10px;
 }
 
-/* Make this disappear when input is focused*/
 .search-input-container img {
   width: 25px;
   height: 25px;
@@ -64,6 +69,7 @@ main {
 }
 
 .weather-icon {
+  display: flex;
   width: 175px;
   padding: 20px;
 }
@@ -102,28 +108,42 @@ hr {
 
 .detailed-top {
   display: flex;
+  gap: 10px;
   padding: 0 30px 0 30px;
+}
+
+.detailed-top button {
+  display: flex;
+  background-color: transparent;
+  cursor: pointer;
+  border: none;
 }
 
 .time-period {
   font-weight: 100;
   color: rgb(255, 246, 246);
-  margin-right: 30px;
 }
 
-.detailed-card-container {
-  display: grid;
+.now-card-container {
+  display: none;
   grid-template-rows: repeat(3, 1fr);
   grid-template-columns: repeat(3, 1fr);
   gap: 20px;
   padding: 20px;
 }
 
+.today-card-container {
+  display: none;
+  flex-direction: column;
+  gap: 20px;
+  padding: 20px;
+  width: 400px;
+}
+
 .detailed-card {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  border: 1px solid black;
   width: 100%;
   height: 125px;
   border-radius: 20px;
@@ -148,6 +168,7 @@ hr {
 .card-foot p {
   opacity: .8;
   font-size: .8rem;
+  display: inline;
 }
 
 .detailed-card p span {
@@ -166,4 +187,8 @@ hr {
 
 .card-foot .wind span {
   font-size: .7rem;
+}
+
+.today-card-container .card-main p {
+  font-size: .9rem;
 }

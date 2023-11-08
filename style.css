@@ -152,6 +152,10 @@ hr {
   padding: 15px;
 }
 
+.detailed-card:hover {
+  background-color: rgba(255, 246, 246, 0.5);
+}
+
 .card-header p, .card-main p, .card-foot p {
   margin: 0;
 }

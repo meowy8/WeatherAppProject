@@ -84,11 +84,6 @@ const todayWeatherFetch = (placeName) => {
       avgTemp.innerText = data.forecast.forecastday[0].day.avgtemp_c + '°C'
       highLowTemp.innerText = 'High: ' + data.forecast.forecastday[0].day.maxtemp_c + '\nLow: ' + data.forecast.forecastday[0].day.mintemp_c
 
-
-      // const timeArr = data.current.last_updated.split(' ')
-      // date.innerText = timeArr[0]
-      // time.innerText = timeArr[1]
-
       detailedContainer.classList.remove('hidden')
       nowView()
     })

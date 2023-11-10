@@ -4,9 +4,10 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="style.css">
+  <link rel="icon" type="image/x-icon" href="/images/3859148_forecast_sun_sunrise_sunset_weather_icon.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300&family=Rubik+Mono+One&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;500&family=Rubik+Mono+One&display=swap" rel="stylesheet">
   <title>Weather App</title>
 </head>
 <body>
@@ -21,8 +22,8 @@
       <h2 class="temperature" id="temperature"></h2>
       <p class="weather-description" id="weather-description"></p>
       <hr>
-      <h3 class="date" id="date">Monday 6 Nov</h3>
-      <p class="time" id="time">17:37</p>
+      <h3 class="date" id="date"></h3>
+      <p class="time" id="time"></p>
     </section>
     <section class="detailed-container hidden" id="detailed-container">
       <div class="detailed-top">
@@ -34,15 +35,15 @@
         </button>
       </div>
       <div class="now-card-container" id="now-card-container">
-        <section class="detailed-card UV-card">
+        <section class="detailed-card" id="uv-index-card">
           <div class="card-header">
             <p class="UV">UV Index</p>
           </div>
           <div class="card-main">
-            <p class="UV" id="uv-value">0</p>
+            <p class="UV" id="uv-value"></p>
           </div>
           <div class="card-foot">
-            <p class="UV" id="uv-info">Low</p>
+            <p class="UV" id="uv-info"></p>
           </div>
         </section>
         <section class="detailed-card">
@@ -50,10 +51,10 @@
             <p class="wind">Wind</p>
           </div>
           <div class="card-main">
-            <p class="wind" id="wind-value">10 <span>mph Wind</span></p>
+            <p class="wind" id="wind-value">></p>
           </div>
           <div class="card-foot">
-            <p class="wind" id="gust-value">18 MPH Gusts</p>
+            <p class="wind" id="gust-value"></p>
           </div>
         </section>
         <section class="detailed-card">
@@ -61,7 +62,7 @@
             <p class="feels-like">Feels Like</p>
           </div>
           <div class="card-main">
-            <p class="feels-like" id="feels-like-value">7 <span>C</span></p>
+            <p class="feels-like" id="feels-like-value"></p>
           </div>
           <div class="card-foot">
             <p class="feels-like" id="feels-like-info"></p>
@@ -72,21 +73,21 @@
             <p class="precipitation">Precipitation</p>
           </div>
           <div class="card-main">
-            <p class="precipitation" id="precipitation-value">0mm <span>in last 24h</span></p>
+            <p class="precipitation" id="precipitation-value"></p>
           </div>
           <div class="card-foot">
             <p class="precipitation" id="precipitation-info"></p>
           </div>
         </section>
-        <section class="detailed-card">
+        <section class="detailed-card" id="visibility-card">
           <div class="card-header">
             <p class="visibility">Visibility</p>
           </div>
           <div class="card-main">
-            <p class="visibility" id="visibility-value">19 <span>mi</span></p>
+            <p class="visibility" id="visibility-value"></p>
           </div>
           <div class="card-foot">
-            <p class="visibility" id="visibility-info">Perfectly clear view</p>
+            <p class="visibility" id="visibility-info"></p>
           </div>
         </section>
         <section class="detailed-card">
@@ -94,21 +95,21 @@
             <p class="humidity">Humidity</p>
           </div>
           <div class="card-main">
-            <p class="humidity" id="humidity-value">77 <span>%</span></p>
+            <p class="humidity" id="humidity-value"></p>
           </div>
           <div class="card-foot">
-            <p class="humidity" id="humidity-info">The dew point is about <span id="dew-point"></span>°C right now</p>
+            <p class="humidity" id="humidity-info"></p>
           </div>
         </section>
-        <section class="detailed-card">
+        <section class="detailed-card" id="air-pollution-card">
           <div class="card-header">
             <p class="air-pollution">Air Pollution</p>
           </div>
           <div class="card-main">
-            <p class="air-pollution" id="air-pollution-value">2 <span>Low</span></p>
+            <p class="air-pollution" id="air-pollution-value"><span>Low</span></p>
           </div>
           <div class="card-foot">
-            <p class="air-pollution" id="air-pollution-info">Air quality index is 2, which is worse than yesterday at about this time</p>
+            <p class="air-pollution" id="air-pollution-info"></p>
           </div>
         </section>
         <section class="detailed-card">
@@ -116,7 +117,7 @@
             <p class="air-pressure">Air Pressure</p>
           </div>
           <div class="card-main">
-            <p class="air-pressure" id="air-pressure-value">1,002 <span>mbar</span></p>
+            <p class="air-pressure" id="air-pressure-value"></p>
           </div>
           <div class="card-foot">
             <p class="air-pressure"></p>
@@ -124,6 +125,7 @@
         </section>
       </div>
       <div class="today-card-container" id="today-card-container">
+        <div class="today-left">
           <section class="detailed-card">
             <div class="card-header">
               <p class="overview">Overview</p>
@@ -140,10 +142,10 @@
               <p class="sunset">Sunset</p>
             </div>
             <div class="card-main">
-              <p class="sunset" id="sunset-time">16:20</p>
+              <p class="sunset" id="sunset-time"></p>
             </div>
             <div class="card-foot">
-              <p class="sunset">Sunrise: </p><p class="sunset" id="sunrise-time">07:33</p>
+             <p class="sunset" id="sunrise-time"></p>
             </div>
           </section>
           <section class="detailed-card">
@@ -157,6 +159,10 @@
               <p class="avg-temp" id="high-low-temp"></p>
             </div>
           </section>
+        </div>
+        <div class="today-right">
+            <img src="" alt="" class="location-image" id="location-image">
+        </div>
       </div>
       <footer></footer>
     </section>

@@ -1,6 +1,7 @@
 const detailedContainer = document.getElementById('detailed-container');
 const nowCardContainer = document.getElementById('now-card-container');
 const todayCardContainer = document.getElementById('today-card-container');
+const allCards = document.querySelectorAll('.detailed-card');
 const searchBar = document.getElementById('search-input');
 const searchImg = document.querySelector('.search-input-container img');
 const weatherIcon = document.getElementById('weather-icon');
@@ -13,6 +14,7 @@ const nowButton = document.getElementById('now-btn');
 const todayButton = document.getElementById('today-btn');
 const nowButtonText = document.getElementById('now-btn-text');
 const todayButtonText = document.getElementById('today-btn-text');
+const uvIndexCard = document.getElementById('uv-index-card');
 const uvValue = document.getElementById('uv-value');
 const uvInfo = document.getElementById('uv-info');
 const windValue = document.getElementById('wind-value');
@@ -21,6 +23,7 @@ const feelsLikeValue = document.getElementById('feels-like-value');
 const feelsLikeInfo = document.getElementById('feels-like-info');
 const precipitationValue = document.getElementById('precipitation-value');
 const precipitationInfo = document.getElementById('precipitation-info');
+const visibilityCard = document.getElementById('visibility-card');
 const visibilityValue = document.getElementById('visibility-value');
 const visibilityInfo = document.getElementById('visibility-info');
 const humidityValue = document.getElementById('humidity-value');
@@ -28,6 +31,7 @@ const humidityInfo = document.getElementById('humidity-info');
 const dewPoint = document.getElementById('dew-point');
 const sunsetTime = document.getElementById('sunset-time');
 const sunriseTime = document.getElementById('sunrise-time');
+const airPollutionCard = document.getElementById('air-pollution-card')
 const airPollutionValue = document.getElementById('air-pollution-value');
 const airPollutionInfo = document.getElementById('air-pollution-info');
 const airPressureValue = document.getElementById('air-pressure-value');
@@ -35,6 +39,7 @@ const overviewText = document.getElementById('overview-text');
 const chanceOfRain = document.getElementById('overview-rain');
 const avgTemp = document.getElementById('avg-temp');
 const highLowTemp = document.getElementById('high-low-temp');
+const locationImage = document.getElementById('location-image')
 
 const currentDate = new Date()
 const dateOptions = { weekday: 'long', month: 'long', day: 'numeric' }
@@ -79,30 +84,54 @@ const todayView = () => {
 }
 
 const uvIndexLevel = (uvIndex) => {
+  let level = ''
+  let textColor = ''
   if (uvIndex <= 2) {
-    return 'Low'
-  } else if (3 <= uvIndex <= 5) {
-    return 'Moderate'
-  } else if (6 <= uvIndex <= 7) {
-    return 'High'
-  } else if (8 <= uvIndex <= 10) {
-    return 'Very High'
+    level = 'Low'
+    textColor = 'green'
+    return { level, textColor }
+  } else if (uvIndex >= 3 && uvIndex <= 5) {
+    level = 'Moderate'
+    textColor = 'yellow'
+    return { level, textColor }
+  } else if (uvIndex >= 6 && uvIndex <= 7) {
+    level = 'High'
+    textColor = 'orange'
+    return { level, textColor }
+  } else if (uvIndex >= 8 && uvIndex <= 10) {
+    level = 'Very High'
+    textColor = 'darkred'
+    return { level, textColor }
   } else {
-    return 'Extreme'
+    level = 'Extreme'
+    textColor = 'red'
+    return { level, textColor }
   }
 }
 
 const visibilityLevel = (visibility) => {
+  let level = ''
+  let textColor = ''
   if (visibility < 1) {
-    return 'Very poor visibility'
-  } else if (1 <= visibility <= 4) {
-    return 'Poor visibility'
-  } else if (5 <= visibility <= 7) {
-    return 'Moderate visibility'
-  } else if (8 <= visibility <= 10) {
-    return 'Good visibility'
+    level = 'Very poor visibility'
+    textColor = 'red'
+    return { level, textColor }
+  } else if (visibility >= 1 && visibility <= 4) {
+    level = 'Poor visibility'
+    textColor = 'darkred'
+    return { level, textColor }
+  } else if (visibility >= 5 && visibility <= 7) {
+    level = 'Moderate visibility'
+    textColor = 'darkorange'
+    return { level, textColor }
+  } else if (visibility >= 8 && visibility <= 10) {
+    level = 'Good visibility'
+    textColor = 'darkgreen'
+    return { level, textColor }
   } else {
-    return 'Perfectly clear view'
+    level = 'Perfectly clear view'
+    textColor = 'green'
+    return { level, textColor }
   }
 }
 
@@ -112,12 +141,20 @@ const dewPointCalc = (temp, humidity) => {
 }
 
 const airPollutionLevel = (airPollution) => {
-  if (airPollution <= 50) {
-    return 'Good'
-  } else if (50 < airPollution <= 100) {
-    return 'Moderate'
+  let level = ''
+  let textColor = '' 
+  if (airPollution < 50) {
+    level = 'Good'
+    textColor = 'green'
+    return { level, textColor}
+  } else if (airPollution > 50 && airPollution <= 100) {
+    level = 'Moderate'
+    textColor = 'orange'
+    return { level, textColor}
   } else {
-    return 'Unhealthy'
+    level = 'Unhealthy'
+    textColor = 'red'
+    return { level, textColor}
   }
 }
 
@@ -129,13 +166,11 @@ const todayWeatherFetch = (placeName) => {
       console.log(data)
 
       weatherIcon.style.display = 'flex'
-      weatherIcon.src = data.current.condition.icon
       location.innerText = data.location.name
       temperature.innerText = data.current.temp_c + '°C'
       weatherDescription.innerText = data.current.condition.text
       uvValue.innerText = data.current.uv
       windValue.innerHTML = data.current.wind_mph + '<span> mph Wind</span>'
-      gustValue.innerHTML = data.current.gust_mph + '<span> mph Gusts</span>'
       feelsLikeValue.innerText = data.current.feelslike_c + '°C'
       precipitationValue.innerHTML = data.current.precip_mm + '<span> mm in last 24hr</span>'
       visibilityValue.innerHTML = data.current.vis_miles + '<span> mi</span>'
@@ -144,25 +179,62 @@ const todayWeatherFetch = (placeName) => {
       airPressureValue.innerHTML = data.current.pressure_mb + '<span>mbar</span>'
 
       overviewText.innerText = data.forecast.forecastday[0].day.condition.text
-      chanceOfRain.innerHTML = data.forecast.forecastday[0].day.daily_chance_of_rain + '<span>% chance of rain</span>'
+      chanceOfRain.innerHTML = data.forecast.forecastday[0].day.daily_chance_of_rain + '%' + ' <span>chance of rain</span>'
       avgTemp.innerText = data.forecast.forecastday[0].day.avgtemp_c + '°C'
-      highLowTemp.innerText = 'High: ' + data.forecast.forecastday[0].day.maxtemp_c + '°C' + '\nLow: ' + data.forecast.forecastday[0].day.mintemp_c + '°C'
+      highLowTemp.innerHTML = '<span>High: </span>' + data.forecast.forecastday[0].day.maxtemp_c + '°C' + '\n<span>Low: </span>' + data.forecast.forecastday[0].day.mintemp_c + '°C'
 
       const weatherIconCode = data.current.condition.code
       weatherIcon.src = weatherIcons[weatherIconCode]
 
-      dewPoint.innerText = dewPointCalc(data.current.temp_c, data.current.humidity).toFixed(1)
-      uvInfo.innerText = uvIndexLevel(data.current.uv)
-      visibilityInfo.innerText = visibilityLevel(data.current.vis_miles)
-      precipitationInfo.innerHTML = data.forecast.forecastday[0].day.totalprecip_mm + '<span>mm of rain expected today</span>'
-      airPollutionInfo.innerText = airPollutionLevel(data.current.air_quality)
+      humidityInfo.innerHTML = '<span>The dew point is about </span>' + dewPointCalc(data.current.temp_c, data.current.humidity).toFixed(1) + '°C ' + ' <span>right now</span>'
+      uvInfo.innerText = uvIndexLevel(data.current.uv).level
+      gustValue.innerHTML = data.current.gust_mph + 'mph' + '<span> Gusts</span>'
+      visibilityInfo.innerText = visibilityLevel(data.current.vis_miles).level
+      precipitationInfo.innerHTML = data.forecast.forecastday[0].day.totalprecip_mm + 'mm' + '<span> of rain expected today</span>'
+      airPollutionInfo.innerText = airPollutionLevel(data.current.air_quality['gb-defra-index']).level
+
+      allCards.forEach( card => {
+        const cardFootText = card.querySelector('.card-foot p')
+        card.addEventListener('mouseover', function() {
+          cardFootText.style.fontSize = 'medium'
+          cardFootText.style.fontWeight = '500'
+        })
+        card.addEventListener('mouseleave', function() {
+          cardFootText.style.fontSize = ''
+          cardFootText.style.fontWeight = ''
+        })
+      })
+
+      uvIndexCard.addEventListener('mouseover', function() {
+        uvInfo.style.color = uvIndexLevel(data.current.uv).textColor
+        uvInfo.style.opacity = 1
+      })
+      uvIndexCard.addEventListener('mouseleave', function() {
+        uvInfo.style.color = ''
+        uvInfo.style.opacity = ''
+      })
+
+      visibilityCard.addEventListener('mouseover', function() {
+        visibilityInfo.style.color = visibilityLevel(data.current.vis_miles).textColor
+      })
+      visibilityCard.addEventListener('mouseleave', function() {
+        visibilityInfo.style.color = ''
+      })
+
+      airPollutionCard.addEventListener('mouseover', function() {
+        airPollutionInfo.style.color = airPollutionLevel(data.current.air_quality['gb-defra-index']).textColor
+      })
+      airPollutionCard.addEventListener('mouseleave', function() {
+        airPollutionInfo.style.color = ''
+      })
 
       detailedContainer.classList.remove('hidden')
       nowView()
     })
-    .catch( () => {
+    .catch( (error) => {
       searchBar.value = ''
       searchBar.placeholder = 'No matching location'
+      console.error(error)
     })
   } catch (error) {
       console.error(error.message)
@@ -176,12 +248,29 @@ const todayAstroFetch = (placeName) => {
     .then(data => {
       console.log(data)
       sunsetTime.innerText = data.astronomy.astro.sunset
-      sunriseTime.innerText = data.astronomy.astro.sunrise
+      sunriseTime.innerHTML = '<span>Sunrise:</span> ' + data.astronomy.astro.sunrise
     })
     .catch( () => searchBar.placeholder = 'No matching location')
   } catch(error) {
     console.error(error.message)
   }
+}
+
+const locationImageFetch = (placeName) => {
+  fetch(`https://api.pexels.com/v1/search?query=${placeName}`, {
+    method: 'GET',
+    headers: {
+      Authorization: 'lym18wZq9OnXAtvZp0Ss5kPZLAarcrReI3UxgnEo54CxcQGiSecmy7ZC',
+    }
+  })
+  .then((response) => response.json())
+  .then((data) => {
+    console.log(data)
+    locationImage.src = data.photos[0].src.portrait
+  })
+  .catch((error) => {
+    console.error('Error:', error);
+  });
 }
 
 searchBar.addEventListener('keydown', function(event) {
@@ -190,6 +279,7 @@ searchBar.addEventListener('keydown', function(event) {
     if (event.key === 'Enter') {
       todayWeatherFetch(placeName)
       todayAstroFetch(placeName)
+      locationImageFetch(placeName)
     }
   }
 })

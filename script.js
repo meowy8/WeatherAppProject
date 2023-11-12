@@ -257,7 +257,7 @@ const todayAstroFetch = (placeName) => {
 }
 
 const locationImageFetch = (placeName) => {
-  fetch(`https://api.pexels.com/v1/search?query=${placeName}`, {
+  fetch(`https://api.pexels.com/v1/search?query=${placeName} city`, {
     method: 'GET',
     headers: {
       Authorization: 'lym18wZq9OnXAtvZp0Ss5kPZLAarcrReI3UxgnEo54CxcQGiSecmy7ZC',
@@ -266,7 +266,8 @@ const locationImageFetch = (placeName) => {
   .then((response) => response.json())
   .then((data) => {
     console.log(data)
-    locationImage.src = data.photos[0].src.portrait
+    const randIndex = Math.floor(Math.random() * 15)
+    locationImage.src = data.photos[randIndex].src.portrait
   })
   .catch((error) => {
     console.error('Error:', error);

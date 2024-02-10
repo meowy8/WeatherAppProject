@@ -160,7 +160,7 @@ const airPollutionLevel = (airPollution) => {
 
 const todayWeatherFetch = (placeName) => {
   try {
-    fetch(`http://api.weatherapi.com/v1/forecast.json?key=911c51c90b2644cd9ae172628232509&q=${placeName}&aqi=yes`)
+    fetch(`https://api.weatherapi.com/v1/forecast.json?key=911c51c90b2644cd9ae172628232509&q=${placeName}&aqi=yes`)
     .then(response => response.json())
     .then(data => {
       console.log(data)
@@ -243,7 +243,7 @@ const todayWeatherFetch = (placeName) => {
 
 const todayAstroFetch = (placeName) => {
   try {
-    fetch(`http://api.weatherapi.com/v1/astronomy.json?key=911c51c90b2644cd9ae172628232509&q=${placeName}`)
+    fetch(`https://api.weatherapi.com/v1/astronomy.json?key=911c51c90b2644cd9ae172628232509&q=${placeName}`)
     .then(response => response.json())
     .then(data => {
       console.log(data)
